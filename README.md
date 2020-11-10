@@ -1,2 +1,2 @@
-# arquetipo_drop_wizard
+# Arquetipo Drop Wizard
 Arquetipo Inicial Drop wizard
