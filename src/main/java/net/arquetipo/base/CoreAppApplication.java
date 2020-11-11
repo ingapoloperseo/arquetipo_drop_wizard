@@ -1,8 +1,12 @@
+//https://www.dropwizard.io/en/latest/getting-started.html
+
 package net.arquetipo.base;
 
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import net.arquetipo.base.health.TemplateHealthCheck;
+import net.arquetipo.base.resources.HelloWorldResource;
 
 public class CoreAppApplication extends Application<CoreAppConfiguration> {
 
@@ -18,12 +22,19 @@ public class CoreAppApplication extends Application<CoreAppConfiguration> {
     @Override
     public void initialize(final Bootstrap<CoreAppConfiguration> bootstrap) {
         // TODO: application initialization
-    }
-
+    }  
+    
     @Override
-    public void run(final CoreAppConfiguration configuration,
-                    final Environment environment) {
-        // TODO: implement application
-    }
-
+    public void run(CoreAppConfiguration configuration,
+            Environment environment) {
+		final HelloWorldResource resource = new HelloWorldResource(
+		    configuration.getTemplate(),
+		    configuration.getDefaultName()
+		);
+		final TemplateHealthCheck healthCheck =
+		        new TemplateHealthCheck(configuration.getTemplate());
+		    environment.healthChecks().register("template", healthCheck);
+		
+		environment.jersey().register(resource);
+	}
 }
