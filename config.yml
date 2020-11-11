@@ -2,6 +2,7 @@ template: Hello, %s!
 defaultName: Stranger
 server:
   rootPath: /api/*
+dateFormat: yyyy-MM-dd'T'HH:mmZ
 logging:
   level: INFO
   loggers:

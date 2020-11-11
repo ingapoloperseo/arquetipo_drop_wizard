@@ -12,6 +12,9 @@ public class CoreAppConfiguration extends Configuration {
     @NotEmpty
     private String defaultName = "Stranger";
 
+    @NotEmpty
+    private String dateFormat;
+
     @JsonProperty
     public String getTemplate() {
         return template;
@@ -30,5 +33,10 @@ public class CoreAppConfiguration extends Configuration {
     @JsonProperty
     public void setDefaultName(String name) {
         this.defaultName = name;
+    }
+
+    @JsonProperty
+    public String getDateFormat() {
+        return dateFormat;
     }
 }
