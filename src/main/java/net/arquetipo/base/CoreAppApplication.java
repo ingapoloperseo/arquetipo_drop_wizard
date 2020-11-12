@@ -3,7 +3,9 @@
 package net.arquetipo.base;
 
 import io.dropwizard.Application;
+import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.jdbi.DBIFactory;
+import io.dropwizard.migrations.MigrationsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import net.arquetipo.base.db.UserDAO;
@@ -28,7 +30,15 @@ public class CoreAppApplication extends Application<CoreAppConfiguration> {
 
     @Override
     public void initialize(final Bootstrap<CoreAppConfiguration> bootstrap) {
-        // TODO: application initialization
+
+        // https://www.dropwizard.io/en/latest/manual/migrations.html
+        bootstrap.addBundle(new MigrationsBundle<CoreAppConfiguration>() {
+            @Override
+            public DataSourceFactory getDataSourceFactory(CoreAppConfiguration configuration) {
+                return configuration.getDataSourceFactory();
+            }
+        });
+
     }
 
     @Override
