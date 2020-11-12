@@ -1,0 +1,2 @@
+insert into app_user(id, name, email, created, user_type) values (1, 'Juan Perez', 'jperez@mail.com', '2020-01-01 19:10:25-07', 'ADMINISTRATOR');
+insert into app_user(id, name, email, created, user_type) values (2, 'Hugo Sanchez', 'hsanchez@mail.com', '2020-02-02 20:11:26-08', 'NORMAL');

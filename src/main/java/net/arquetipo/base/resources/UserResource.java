@@ -3,6 +3,7 @@ package net.arquetipo.base.resources;
 import net.arquetipo.base.api.User;
 import net.arquetipo.base.api.UserName;
 import net.arquetipo.base.api.UserType;
+import net.arquetipo.base.db.UserDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,7 +11,6 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.Set;
 
 @Consumes(MediaType.APPLICATION_JSON)
@@ -18,6 +18,12 @@ import java.util.Set;
 @Path("users")
 public class UserResource {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserResource.class.getName());
+
+    private final UserDAO userDAO;
+
+    public UserResource(UserDAO userDAO) {
+        this.userDAO = userDAO;
+    }
 
     @POST
     public void createUser(User createUserRequest) {
@@ -39,7 +45,7 @@ public class UserResource {
     @GET
     public Set<User> getAllUsers() {
         LOGGER.info(">>getAllUsers ");
-        return Collections.singleton(getSampleUser());
+        return userDAO.listUsers();
     }
 
     /**
