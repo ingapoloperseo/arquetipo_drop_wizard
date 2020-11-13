@@ -5,6 +5,7 @@ import net.arquetipo.base.db.mapper.UserMapper;
 import org.skife.jdbi.v2.sqlobject.Bind;
 import org.skife.jdbi.v2.sqlobject.BindBean;
 import org.skife.jdbi.v2.sqlobject.SqlQuery;
+import org.skife.jdbi.v2.sqlobject.SqlUpdate;
 import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
 
 import java.util.Set;
@@ -19,11 +20,14 @@ public interface UserDAO {
     User updateUser(@BindBean User currentUser);
 
     // FIXME probar
-    @SqlQuery("SELECT name FROM app_user WHERE name = :name")
+    @SqlQuery("SELECT * FROM app_user WHERE name = :name")
     User findByName(@Bind("name") String name);
 
     @SqlQuery("SELECT * FROM app_user ORDER BY name")
     Set<User> listUsers();
+
+    @SqlUpdate("DELETE FROM app_user WHERE id = :id")
+    void deleteUser(@Bind("id") Long id);
 
     /**
      * close with no args is used to close the connection

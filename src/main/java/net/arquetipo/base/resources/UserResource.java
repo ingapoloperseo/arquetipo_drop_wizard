@@ -73,6 +73,7 @@ public class UserResource {
     }
 
     @GET
+    // TODO paginación
     public Set<User> getAllUsers() {
         LOGGER.info(">>getAllUsers ");
         return userDAO.listUsers();
@@ -94,11 +95,13 @@ public class UserResource {
     }
 
     @DELETE
-    @Path("{name}")
-    public void deleteUser(@PathParam("name") UserName name) {
-        LOGGER.info(">>deleteUser({})", name);
+    @Path("{id}")
+    public Response deleteUser(@PathParam("id") Long id) {
+        LOGGER.info(">>deleteUser({})", id);
 
-        // FIXME código dummy
-        throw new WebApplicationException(Response.Status.NOT_FOUND);
+        userDAO.deleteUser(id);
+
+        return Response.noContent().build();
+
     }
 }
