@@ -6,12 +6,16 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <changeSet id="1" author="osanchez" dbms="postgresql" >
+    <!-- Normalmente este changeset no se utilizaría; no es deseable estar borrando la BD como parte de
+    actividades de sincronización de datos -->
+    <changeSet id="1" author="osanchez" dbms="postgresql">
         <sqlFile path="db/drop.sql" endDelimiter=";" relativeToChangelogFile="true" />
     </changeSet>
+    <!-- En la vida real habría N changesets de DDL -->
     <changeSet id="2" author="osanchez" dbms="postgresql" >
         <sqlFile path="db/schema.sql" endDelimiter=";" relativeToChangelogFile="true" />
     </changeSet>
+    <!-- En la vida real habría N changesets de DML -->
     <changeSet id="3" author="osanchez" dbms="postgresql" >
         <sqlFile path="db/data.sql" endDelimiter=";" relativeToChangelogFile="true" />
     </changeSet>
