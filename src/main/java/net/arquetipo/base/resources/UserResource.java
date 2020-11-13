@@ -47,6 +47,19 @@ public class UserResource {
         return Response.created(new URI("/api/users/" + result.getId())).build();
     }
 
+    @PUT
+    public Response updateUser(User updateUserRequest) {
+        LOGGER.info(">>updateUser('{}')", updateUserRequest);
+
+        if (updateUserRequest.getId() == null) {
+            throw new BadRequestException("ID incorrecto", ENTITY_NAME, "idnull");
+        }
+
+        User result = userDAO.updateUser(updateUserRequest);
+
+        return Response.accepted(result).build();
+    }
+
     /**
      * Recupera un usuario para el nombre proporcionado
      *

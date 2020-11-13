@@ -15,6 +15,9 @@ public interface UserDAO {
     @SqlQuery("INSERT INTO app_user(name, email, created, user_type) VALUES(:name, :email, :created, :type) RETURNING *")
     User insertUser(@BindBean User newUser);
 
+    @SqlQuery("UPDATE app_user SET name = :name, email = :email, user_type = :type WHERE id = :id RETURNING *")
+    User updateUser(@BindBean User currentUser);
+
     // FIXME probar
     @SqlQuery("SELECT name FROM app_user WHERE name = :name")
     User findByName(@Bind("name") String name);
