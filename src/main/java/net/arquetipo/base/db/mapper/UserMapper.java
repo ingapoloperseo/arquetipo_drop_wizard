@@ -12,6 +12,7 @@ public class UserMapper implements ResultSetMapper<User> {
     @Override
     public User map(int i, ResultSet resultSet, StatementContext statementContext) throws SQLException {
         return User.builder()
+                .id(resultSet.getLong("id"))
                 .name(resultSet.getString("name"))
                 .email(resultSet.getString("email"))
                 .created(resultSet.getTimestamp("created").toLocalDateTime())

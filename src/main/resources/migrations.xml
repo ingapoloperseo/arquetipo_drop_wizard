@@ -6,6 +6,9 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
+    <!-- Utilizar esta sentencia para limpiar changelog y poder ejecutar nuevamente -->
+    <!-- DELETE FROM databasechangelog WHERE id IS NOT NULL; -->
+
     <!-- Normalmente este changeset no se utilizaría; no es deseable estar borrando la BD como parte de
     actividades de sincronización de datos -->
     <changeSet id="1" author="osanchez" dbms="postgresql">

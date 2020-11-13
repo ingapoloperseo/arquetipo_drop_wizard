@@ -19,6 +19,8 @@ import java.util.stream.Collectors;
  */
 @JsonDeserialize(builder = User.Builder.class)
 public final class User {
+    private final Long id;
+
     private final String name;
 
     @Pattern(regexp=".+@.+\\.[a-z]+")
@@ -30,12 +32,18 @@ public final class User {
 
     private int memoizedHashCode;
 
-    private User(String name, String email, LocalDateTime created, UserType type) {
-        validateFields(name, email, created, type);
+    private User(Long id, String name, String email, LocalDateTime created, UserType type) {
+        validateFields(id, name, email, created, type);
+        this.id = id;
         this.name = name;
         this.email = email;
         this.created = created;
         this.type = type;
+    }
+
+    @JsonProperty("id")
+    public Long getId() {
+        return this.id;
     }
 
     @JsonProperty("name")
@@ -64,7 +72,8 @@ public final class User {
     }
 
     private boolean equalTo(User other) {
-        return this.name.equals(other.name)
+        return this.id.equals(other.id)
+                && this.name.equals(other.name)
                 && this.email.equals(other.email)
                 && this.created.isEqual(other.created)
                 && this.type.equals(other.type);
@@ -74,7 +83,7 @@ public final class User {
     public int hashCode() {
         int result = memoizedHashCode;
         if (result == 0) {
-            result = Objects.hash(this.name, this.email, this.created.toInstant(OffsetDateTime.now().getOffset()), this.type);
+            result = Objects.hash(this.id, this.name, this.email, this.created.toInstant(OffsetDateTime.now().getOffset()), this.type);
             memoizedHashCode = result;
         }
         return result;
@@ -82,10 +91,10 @@ public final class User {
 
     @Override
     public String toString() {
-        return "User{name: " + name + ", email: " + email + ", created: " + created + ", type: " + type + '}';
+        return "User{id: " + id + ", name: " + name + ", email: " + email + ", created: " + created + ", type: " + type + '}';
     }
 
-    private static void validateFields(String name, String email, LocalDateTime created, UserType type) {
+    private static void validateFields(Long id, String name, String email, LocalDateTime created, UserType type) {
         List<String> missingFields = null;
         missingFields = addFieldIfMissing(missingFields, name, "name");
         missingFields = addFieldIfMissing(missingFields, email, "email");
@@ -114,6 +123,8 @@ public final class User {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
+        private Long id;
+
         private String name;
 
         private String email;
@@ -126,10 +137,17 @@ public final class User {
         }
 
         public Builder from(User other) {
+            id(other.getId());
             name(other.getName());
             email(other.getEmail());
             created(other.getCreated());
             type(other.getType());
+            return this;
+        }
+
+        @JsonSetter("id")
+        public Builder id(Long id) {
+            this.id = id;
             return this;
         }
 
@@ -158,7 +176,7 @@ public final class User {
         }
 
         public User build() {
-            return new User(name, email, created, type);
+            return new User(id, name, email, created, type);
         }
     }
 }

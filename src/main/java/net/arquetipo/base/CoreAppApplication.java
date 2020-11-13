@@ -13,6 +13,8 @@ import net.arquetipo.base.health.TemplateHealthCheck;
 import net.arquetipo.base.resources.HelloWorldResource;
 import net.arquetipo.base.resources.UserResource;
 import org.skife.jdbi.v2.DBI;
+import org.skife.jdbi.v2.util.EnumByNameColumnMapperFactory;
+import org.zalando.problem.ProblemModule;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -54,6 +56,7 @@ public class CoreAppApplication extends Application<CoreAppConfiguration> {
 
         final DBIFactory factory = new DBIFactory();
         final DBI jdbi = factory.build(environment, configuration.getDataSourceFactory(), "postgresql");
+        jdbi.registerColumnMapper(new EnumByNameColumnMapperFactory());
 
         // User resource
         final UserDAO dao = jdbi.onDemand(UserDAO.class);
@@ -62,5 +65,8 @@ public class CoreAppApplication extends Application<CoreAppConfiguration> {
         // Formato de fecha para la aplicación
         DateFormat eventDateFormat = new SimpleDateFormat(configuration.getDateFormat());
         environment.getObjectMapper().setDateFormat(eventDateFormat);
+
+        // Problem library
+        environment.getObjectMapper().registerModule(new ProblemModule());
     }
 }

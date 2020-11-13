@@ -7,6 +7,8 @@ logging:
   level: INFO
   loggers:
     net.arquetipo.base: DEBUG
+    # JSON mapping
+    io.dropwizard.jersey.jackson.JsonProcessingExceptionMapper: DEBUG
 database:
   # the name of your JDBC driver
   driverClass: org.postgresql.Driver

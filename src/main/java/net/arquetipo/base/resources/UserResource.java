@@ -4,12 +4,15 @@ import net.arquetipo.base.api.User;
 import net.arquetipo.base.api.UserName;
 import net.arquetipo.base.api.UserType;
 import net.arquetipo.base.db.UserDAO;
+import net.arquetipo.base.resources.errors.BadRequestException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -18,6 +21,7 @@ import java.util.Set;
 @Path("users")
 public class UserResource {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserResource.class.getName());
+    private static final String ENTITY_NAME = "Usuario";
 
     private final UserDAO userDAO;
 
@@ -25,9 +29,22 @@ public class UserResource {
         this.userDAO = userDAO;
     }
 
+    /**
+     * {@code POST  /users} : Crea un nuevo usuario
+     *
+     * @param createUserRequest nuevo usuario
+     */
     @POST
-    public void createUser(User createUserRequest) {
+    public Response createUser(User createUserRequest) throws URISyntaxException {
         LOGGER.info(">>createUser('{}')", createUserRequest);
+
+        if (createUserRequest.getId() != null) {
+            throw new BadRequestException("Un nuevo usuario no puede tener ID ya asignado", ENTITY_NAME, "idexists");
+        }
+
+        User result = userDAO.insertUser(createUserRequest);
+
+        return Response.created(new URI("/api/users/" + result.getId())).build();
     }
 
     /**

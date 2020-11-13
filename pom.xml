@@ -16,7 +16,10 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <!-- versiones -->
         <dropwizard.version>2.0.15</dropwizard.version>
+        <problem.version>0.23.0</problem.version>
 
         <mainClass>net.arquetipo.base.CoreAppApplication</mainClass>
     </properties>
@@ -65,6 +68,24 @@
             <artifactId>postgresql</artifactId>
             <version>42.2.12</version>
         </dependency>
+
+        <!-- https://github.com/zalando/problem -->
+        <dependency>
+            <groupId>org.zalando</groupId>
+            <artifactId>problem</artifactId>
+            <version>${problem.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.zalando</groupId>
+            <artifactId>jackson-datatype-problem</artifactId>
+            <version>${problem.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.zalando</groupId>
+            <artifactId>problem-gson</artifactId>
+            <version>${problem.version}</version>
+        </dependency>
+
     </dependencies>
 
     <build>
