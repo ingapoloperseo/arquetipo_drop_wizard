@@ -1,0 +1,8 @@
+# utilizar: docker-compose -f src/main/docker/sonar.yml up -d
+version: '2'
+services:
+  arquetipo-sonar:
+    image: sonarqube:8.3.1-community
+    ports:
+      - 9001:9000
+      - 9092:9092
