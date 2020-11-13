@@ -1,8 +1,6 @@
 package net.arquetipo.base.resources;
 
 import net.arquetipo.base.api.User;
-import net.arquetipo.base.api.UserName;
-import net.arquetipo.base.api.UserType;
 import net.arquetipo.base.db.UserDAO;
 import net.arquetipo.base.resources.errors.BadRequestException;
 import org.slf4j.Logger;
@@ -13,7 +11,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.time.LocalDateTime;
 import java.util.Set;
 
 @Consumes(MediaType.APPLICATION_JSON)
@@ -33,6 +30,7 @@ public class UserResource {
      * {@code POST  /users} : Crea un nuevo usuario
      *
      * @param createUserRequest nuevo usuario
+     * @return Response
      */
     @POST
     public Response createUser(User createUserRequest) throws URISyntaxException {
@@ -47,6 +45,12 @@ public class UserResource {
         return Response.created(new URI("/api/users/" + result.getId())).build();
     }
 
+    /**
+     * {@code PUT  /users} : Actualiza un usuario
+     *
+     * @param updateUserRequest Usuario a actualizar
+     * @return Response
+     */
     @PUT
     public Response updateUser(User updateUserRequest) {
         LOGGER.info(">>updateUser('{}')", updateUserRequest);
@@ -61,37 +65,28 @@ public class UserResource {
     }
 
     /**
-     * Recupera un usuario para el nombre proporcionado
+     * {@code GET  /users/:id} : Recupera un usuario para el id proporcionado
      *
-     * @param name Nombre del usuario a buscar
+     * @param id Identificador del usuario a buscar
      */
     @GET
-    @Path("{name}")
-    public User getUser(@PathParam("name") UserName name) {
-        LOGGER.info(">>getUser({})", name);
-        return getSampleUser();
+    @Path("{id}")
+    public Response getUser(@PathParam("id") Long id) {
+        LOGGER.info(">>getUser({})", id);
+
+        User result = userDAO.findById(id);
+        if (result != null) {
+            return Response.ok(result).build();
+        }
+
+        return Response.status(Response.Status.NOT_FOUND).build();
     }
 
     @GET
-    // TODO paginación
+    // TODO paginación, posiblemente https://github.com/aruld/dropwizard-pagination
     public Set<User> getAllUsers() {
         LOGGER.info(">>getAllUsers ");
         return userDAO.listUsers();
-    }
-
-    /**
-     * Temporal: construir un usuario para tener algo que regresar
-     * FIXME remover una vez conectado a BD
-     *
-     * @return dummy
-     */
-    private User getSampleUser() {
-        return User.builder()
-                .name("Juan Perez")
-                .email("jperez@mail.com")
-                .created(LocalDateTime.now())
-                .type(UserType.ADMINISTRATOR)
-                .build();
     }
 
     @DELETE

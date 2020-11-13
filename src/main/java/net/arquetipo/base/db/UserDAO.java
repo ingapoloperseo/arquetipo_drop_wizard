@@ -8,6 +8,7 @@ import org.skife.jdbi.v2.sqlobject.SqlQuery;
 import org.skife.jdbi.v2.sqlobject.SqlUpdate;
 import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
 
+import java.util.List;
 import java.util.Set;
 
 @RegisterMapper(UserMapper.class)
@@ -19,9 +20,8 @@ public interface UserDAO {
     @SqlQuery("UPDATE app_user SET name = :name, email = :email, user_type = :type WHERE id = :id RETURNING *")
     User updateUser(@BindBean User currentUser);
 
-    // FIXME probar
-    @SqlQuery("SELECT * FROM app_user WHERE name = :name")
-    User findByName(@Bind("name") String name);
+    @SqlQuery("SELECT * FROM app_user WHERE id = :id")
+    User findById(@Bind("id") Long id);
 
     @SqlQuery("SELECT * FROM app_user ORDER BY name")
     Set<User> listUsers();
